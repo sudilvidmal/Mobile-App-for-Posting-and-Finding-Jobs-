@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:job_app/pages/Chat_page.dart';
 import 'package:job_app/services/auth/auth_service.dart';
@@ -9,15 +10,25 @@ import '../components/user_tile.dart';
 class ChatListPage extends StatelessWidget {
   ChatListPage({super.key});
 
-  //caht auth services
+  //chat auth services
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text("Chat List"),
+        title: const Text(
+          "Chat List",
+          style: TextStyle(
+            fontSize: 20, // Adjust the font size as needed
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
+        elevation: 0,
       ),
       // drawer: const MyDrawer(),
       body: _buildUserList(),
@@ -30,6 +41,10 @@ class ChatListPage extends StatelessWidget {
     return StreamBuilder(
       stream: _chatService.getUsersStream(),
       builder: (context, snapshot) {
+        print(snapshot
+            .connectionState); // Print the connection state of the stream
+        print(snapshot.error); // Print any error received from the stream
+        // Handle different snapshot states based on your requirements
         //errors
         if (snapshot.hasError) {
           return const Text("error");
@@ -64,6 +79,7 @@ class ChatListPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ChatPage(
                 receiverEmail: userData["email"],
+                receiverID: userData["uid"],
               ),
             ),
           );

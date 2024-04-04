@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:job_app/pages/chatList_page.dart';
-import 'package:job_app/pages/home_page.dart';
 
 import '../services/auth/auth_service.dart';
 // import '../pages/Chat_page.dart';
@@ -59,12 +58,6 @@ class MyDrawer extends StatelessWidget {
                   onTap: () {
                     //pop the drawer
                     Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
                   },
                 ),
               ),
@@ -101,12 +94,6 @@ class MyDrawer extends StatelessWidget {
                     //pop the drawer
                     Navigator.pop(context);
                     //navigate to the chat page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
                   },
                 ),
               ),
