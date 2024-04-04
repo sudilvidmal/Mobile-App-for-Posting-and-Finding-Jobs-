@@ -2,54 +2,62 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  //instance of auth & firestore
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //get current user
   User? getCurrentUser() {
     return _auth.currentUser;
   }
 
-  //sign in
-  Future<UserCredential> signInWithEmailPassword(String email, password) async {
-    try {
-      //sign in user in
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      //save user info  if it dosent already exist
-      _firestore.collection("users").doc(userCredential.user!.uid).set(
-        {
-          'uid': userCredential.user!.uid,
-          'email': email,
-        },
-      );
-
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
-    }
+  // Validate NIC format
+  bool validateNIC(String nic) {
+    // NIC should contain either 12 numbers or 9 numbers ending with X or V
+    return RegExp(r'^\d{9}[XV]$').hasMatch(nic) ||
+        RegExp(r'^\d{12}$').hasMatch(nic);
   }
-  //sign up
 
-  Future<UserCredential> signUpWithEmailPassword(String email, password) async {
+  Future<UserCredential> signUpWithEmailPassword(
+      String email, String password, String username, String nic) async {
     try {
-      //create user
+      // Check if username or NIC already exists
+      final existingUser = await _firestore
+          .collection('users')
+          .where('username', isEqualTo: username)
+          .get();
+      if (existingUser.docs.isNotEmpty) {
+        throw Exception('Username already exists.');
+      }
+
+      final existingNic = await _firestore
+          .collection('users')
+          .where('nic', isEqualTo: nic)
+          .get();
+      if (existingNic.docs.isNotEmpty) {
+        throw Exception('NIC already exists.');
+      }
+
+      // Validate NIC format
+      if (!validateNIC(nic)) {
+        throw Exception('Invalid NIC format.');
+      }
+
+      // If username, NIC, and format are valid and unique, proceed with user registration
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      //save user info in separate doc
-      _firestore.collection("users").doc(userCredential.user!.uid).set(
+      // Store a demo picture URL for each user
+      final demoPictureUrl = 'assets/profile.jpg';
+
+      await _firestore.collection("users").doc(userCredential.user!.uid).set(
         {
           'uid': userCredential.user!.uid,
           'email': email,
+          'username': username,
+          'nic': nic,
+          'profileImageUrl': demoPictureUrl,
         },
       );
 
@@ -59,11 +67,29 @@ class AuthService {
     }
   }
 
-  //sign out
+  Future<UserCredential> signInWithEmailPassword(
+      String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
 
   Future<void> signOut() async {
     return await _auth.signOut();
   }
 
-  //errors
+  Future<DocumentSnapshot?> getUserData(String uid) async {
+    try {
+      return await _firestore.collection('users').doc(uid).get();
+    } catch (e) {
+      print('Error getting user data: $e');
+      return null;
+    }
+  }
 }

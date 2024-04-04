@@ -60,7 +60,7 @@ class LoginPage extends StatelessWidget {
             //welcome back message
 
             Text(
-              "welcome back",
+              "Welcome Back",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 16,
@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
             //email text field
 
             MyTextField(
-              hintText: "Emai",
+              hintText: "Email",
               obscureText: false,
               controller: _emailController,
             ),
