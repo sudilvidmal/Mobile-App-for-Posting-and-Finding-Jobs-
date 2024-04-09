@@ -1,12 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late String _cachedUsername; // Username cache
 
   User? getCurrentUser() {
     return _auth.currentUser;
+  }
+
+  String getCachedUsername() {
+    return _cachedUsername;
   }
 
   // Validate NIC format
@@ -47,6 +55,9 @@ class AuthService {
         email: email,
         password: password,
       );
+
+      // Store the username in the cache
+      _cachedUsername = username;
 
       // Store a demo picture URL for each user
       final demoPictureUrl = 'assets/profile.jpg';

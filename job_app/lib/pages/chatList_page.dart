@@ -70,15 +70,16 @@ class ChatListPage extends StatelessWidget {
       Map<String, dynamic> userData, BuildContext context) {
     // display all user exept current user
     if (userData["email"] != _authService.getCurrentUser()!.email) {
+      
       return UserTile(
-        text: userData["email"],
+        text: userData["username"],
         onTap: () {
           //tapped on the user go to the chat page
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
-                receiverEmail: userData["email"],
+                receiverUsername: userData["username"],
                 receiverID: userData["uid"],
               ),
             ),

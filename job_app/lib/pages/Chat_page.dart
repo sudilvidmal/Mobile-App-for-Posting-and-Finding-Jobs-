@@ -6,10 +6,10 @@ import 'package:job_app/services/auth/auth_service.dart';
 import 'package:job_app/services/chat/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
-  final String receiverEmail;
+  final String receiverUsername;
   final String receiverID;
 
-  ChatPage({super.key, required this.receiverEmail, required this.receiverID});
+  ChatPage({super.key, required this.receiverUsername, required this.receiverID});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -87,7 +87,7 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
-          widget.receiverEmail,
+          widget.receiverUsername,
           style: const TextStyle(
             fontSize: 16, // Adjust the font size as needed
           ),
