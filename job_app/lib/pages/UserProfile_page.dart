@@ -11,8 +11,6 @@ import 'package:jobee/components/text_box_ui2.dart';
 import 'package:image_picker/image_picker.dart';
 
 
-
-
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
 

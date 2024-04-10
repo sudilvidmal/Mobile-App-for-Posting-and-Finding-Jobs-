@@ -1,7 +1,8 @@
-import 'dart:math';
+//import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:jobee/pages/home_page.dart';
 import 'package:jobee/pages/job_detail.dart';
 
 class JobPage extends StatefulWidget {
@@ -92,6 +93,17 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
             ),
           ),
           centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+              );
+            },
+          ),
           backgroundColor: Colors.transparent,
           foregroundColor: Colors.grey,
           elevation: 0,

@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 class AppColor {
-  static Color homePageBackground = const Color(0xFFfbfcff);
-  static Color gradientFirst = const Color(0xFF0f17ad);
-  static Color gradientSecond = const Color(0xFF6985e8);
-  static Color homePageTitle = const Color(0xFF302f51);
-  static Color homePageSubtitle = const Color(0xFF414160);
+  static Color homePageBackground = Color.fromARGB(255, 255, 255, 255);
+  static Color gradientFirst = Color(0xFF248232);
+  static Color gradientSecond = const Color(0xFF2BA84A);
+  static Color homePageTitle = const Color(0xFF2D3A3A);
+  static Color homePageSubtitle = const Color(0xFF2D3A3A);
   static Color homePageDetail = const Color(0xFF6588f4);
   static Color homePageIcons = const Color(0xFF3b3c5c);
   static Color homePageContainerTextSmall = const Color(0xFFf4f5fd);

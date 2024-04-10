@@ -70,7 +70,6 @@ class ChatListPage extends StatelessWidget {
       Map<String, dynamic> userData, BuildContext context) {
     // display all user exept current user
     if (userData["email"] != _authService.getCurrentUser()!.email) {
-      
       return UserTile(
         text: userData["username"],
         onTap: () {
@@ -82,8 +81,6 @@ class ChatListPage extends StatelessWidget {
                 receiverUsername: userData["username"],
 
                 receiverID: userData["uid"], senderID: "email", chatHistory: [],
-
-                
 
               ),
             ),
