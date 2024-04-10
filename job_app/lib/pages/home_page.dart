@@ -1,14 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:jobee/components/my_drawer.dart';
+//import 'package:jobee/components/my_drawer.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart'; // Import carousel_slider package
-import 'package:job_app/pages/Setting_page.dart';
-import 'package:job_app/pages/UserProfile_page.dart';
+import 'package:jobee/pages/Setting_page.dart';
+import 'package:jobee/pages/UserProfile_page.dart';
+import 'package:jobee/pages/job_page.dart';
 import '../services/auth/auth_service.dart';
 import 'colors.dart' as color;
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => SettingPage()),
+                                      builder: (context) => JobPage()),
                                 );
                               },
                               child: Text('Lets Go'),
@@ -212,15 +213,7 @@ class _HomePageState extends State<HomePage> {
                 width: MediaQuery.of(context).size.width,
                 height: 100,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      color.AppColor.gradientSecond.withOpacity(0.8),
-                      color.AppColor.homePageContainerTextSmall
-                          .withOpacity(0.9),
-                    ],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.centerRight,
-                  ),
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
@@ -231,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                     BoxShadow(
                       offset: Offset(5, 10),
                       blurRadius: 10,
-                      color: color.AppColor.gradientSecond.withOpacity(0.3),
+                      color: color.AppColor.homePageTitle.withOpacity(0.1),
                     ),
                   ],
                 ),
@@ -248,17 +241,20 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Best Way",
+                            "Looking for skilled workers?",
                             style: TextStyle(
-                              fontSize: 16,
-                              color: color.AppColor.homePageContainerTextSmall,
+                              fontSize: 15,
+                              color: color.AppColor.homePageTitle,
                             ),
                           ),
-                          Text(
-                            "To Hiring Best Employees",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: color.AppColor.homePageContainerTextSmall,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 3.0),
+                            child: Text(
+                              "Post your JOB now!",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: color.AppColor.gradientFirst,
+                                  fontWeight: FontWeight.w700),
                             ),
                           ),
                           SizedBox(
@@ -271,7 +267,9 @@ class _HomePageState extends State<HomePage> {
                       top: 25,
                       right: 20,
                       child: IconButton(
-                        icon: Icon(Icons.add), // Replace with your desired icon
+                        icon: Icon(Icons.add),
+                        color: color.AppColor
+                            .gradientFirst, // Replace with your desired icon
                         onPressed: () {
                           // Add your onPressed functionality here
                         },
@@ -301,45 +299,47 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to profile page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserProfile()),
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            color.AppColor.gradientSecond.withOpacity(0.5),
-                            color.AppColor.homePageContainerTextSmall
-                                .withOpacity(0.8),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to profile page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserProfile()),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: 130,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              color.AppColor.gradientFirst.withOpacity(0.7),
+                              color.AppColor.gradientSecond.withOpacity(0.7),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.account_circle,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'Profile',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.account_circle,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Profile',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ),
@@ -348,45 +348,49 @@ class _HomePageState extends State<HomePage> {
                       width:
                           20), // Adjust the width according to your preference
 
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the setting page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SettingPage()),
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            color.AppColor.gradientSecond.withOpacity(0.4),
-                            color.AppColor.homePageContainerTextSmall
-                                .withOpacity(0.8),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to the setting page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingPage()),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: 130,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(5, 10),
+                                blurRadius: 10,
+                                color: color.AppColor.homePageTitle
+                                    .withOpacity(0.2),
+                              ),
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.settings,
+                              color: Colors.green,
+                              size: 40,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'Settings',
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Settings',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ),
