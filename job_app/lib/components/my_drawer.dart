@@ -1,17 +1,45 @@
 import 'package:flutter/material.dart';
+
 import 'package:jobee/pages/chatList_page.dart';
-
-
 import '../services/auth/auth_service.dart';
 import '../pages/job_page.dart';
+
 import '../pages/Setting_page.dart';
 import '../pages/UserProfile_page.dart';
 
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key}) : super(key: key);
+
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  late String username = '';
+  late String email = '';
+  late String profileImageUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    final user = AuthService().getCurrentUser();
+    if (user != null) {
+      final userData = await AuthService().getUserData(user.uid);
+      if (userData != null) {
+        setState(() {
+          username = userData['username'];
+          email = userData['email'];
+          profileImageUrl = userData['profileImageUrl'];
+        });
+      }
+    }
+  }
 
   void logout() {
-    //get auth service
     final auth = AuthService();
     auth.signOut();
   }
@@ -25,131 +53,80 @@ class MyDrawer extends StatelessWidget {
         children: [
           Column(
             children: [
-              //logo
-
               UserAccountsDrawerHeader(
-                accountName: const Text('Oflutter.com'),
-                accountEmail: const Text('example@gmail.com'),
+                accountName: Text(
+                  username,
+                  style: TextStyle(color: Colors.white), // Set text color
+                ),
+                accountEmail: Text(
+                  email,
+                  style: TextStyle(color: Colors.white), // Set text color
+                ),
                 currentAccountPicture: CircleAvatar(
-                  child: ClipOval(
-                    child: Image.network(
-                      'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
-                      fit: BoxFit.cover,
-                      width: 90,
-                      height: 90,
+                  backgroundImage: NetworkImage(profileImageUrl),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(
+                      0.7), // Update background color and make it blur
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                      'https://static.vecteezy.com/system/resources/previews/004/947/449/non_2x/coniferous-twigs-closeup-dark-nature-background-realistic-pine-or-spruce-branches-on-blurred-background-lush-vegetation-in-a-coniferous-forest-copy-space-illustration-vector.jpg',
                     ),
                   ),
                 ),
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(
-                          'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),
-                ),
+              ),
+              ListTile(
+                title: const Text("H O M E"),
+                leading: const Icon(Icons.home),
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
 
-              //home list tile
 
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  title: const Text("H O M E"),
-                  leading: const Icon(Icons.home),
-                  onTap: () {
-                    //pop the drawer
-                    Navigator.pop(context);
-                  },
-                ),
+              ListTile(
+                title: const Text("P R O F I L E"),
+                leading: const Icon(Icons.account_circle),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserProfile(),
+                    ),
+                  );
+                },
               ),
+              ListTile(
+                title: const Text("C H A T  L I S T"),
+                leading: const Icon(Icons.list),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatListPage(),
+                    ),
+                  );
+                },
 
-              // user profile list tile
-
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  title: const Text("P R O F I L E"),
-                  leading: const Icon(Icons.account_circle),
-                  onTap: () {
-                    //pop the drawer
-                    Navigator.pop(context);
-                    //navigate to the user profile page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UserProfile(),
-                      ),
-                    );
-                  },
-                ),
               ),
-
-              // // chat page   tile
-
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  title: const Text("J O B S"),
-                  leading: const Icon(Icons.list),
-                  onTap: () {
-                    //pop the drawer
-                    Navigator.pop(context);
-                    //navigate to the job page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const JobPage()),
-                    );
-                  },
-                ),
-              ),
-
-              // chatlist  tile
-
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  title: const Text("C H A T"),
-                  leading: const Icon(Icons.message),
-                  onTap: () {
-                    //pop the drawer
-                    Navigator.pop(context);
-                    //navigate to the chat page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatListPage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-
-              //setting list tile
-
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0),
-                child: ListTile(
-                  title: const Text("S E T T I N G S"),
-                  leading: const Icon(Icons.settings),
-                  onTap: () {
-                    //pop the drawer
-                    Navigator.pop(context);
-
-                    //navigate to the setting page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingPage(),
-                      ),
-                    );
-                  },
-                ),
+              ListTile(
+                title: const Text("S E T T I N G S"),
+                leading: const Icon(Icons.settings),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingPage(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
-
-          //logout list tile
-
           Padding(
             padding: const EdgeInsets.only(left: 25.0, bottom: 25),
             child: ListTile(

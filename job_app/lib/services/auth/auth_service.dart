@@ -13,6 +13,7 @@ class AuthService {
   String getCachedUsername() {
     return _cachedUsername;
   }
+
   Future<Map<String, dynamic>?> getUserByEmail(String email) async {
     try {
       final querySnapshot = await _firestore
@@ -29,6 +30,7 @@ class AuthService {
       return null;
     }
   }
+
   // Validate NIC format
   bool validateNIC(String nic) {
     // NIC should contain either 12 numbers or 9 numbers ending with X or V
@@ -72,7 +74,8 @@ class AuthService {
       _cachedUsername = username;
 
       // Store a demo picture URL for each user
-      final demoPictureUrl = 'assets/profile.jpg';
+      final demoPictureUrl =
+          'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg';
 
       await _firestore.collection("users").doc(userCredential.user!.uid).set(
         {
@@ -81,6 +84,7 @@ class AuthService {
           'username': username,
           'nic': nic,
           'profileImageUrl': demoPictureUrl,
+          'bio': 'Please update your bio!'
         },
       );
 

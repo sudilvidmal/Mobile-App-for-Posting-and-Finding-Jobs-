@@ -80,7 +80,11 @@ class ChatListPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ChatPage(
                 receiverUsername: userData["username"],
+
                 receiverID: userData["uid"], senderID: "email", chatHistory: [],
+
+                receiverID: userData["uid"],
+
               ),
             ),
           );

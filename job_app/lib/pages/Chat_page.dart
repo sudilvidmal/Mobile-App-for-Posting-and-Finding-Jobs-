@@ -9,7 +9,9 @@ class ChatPage extends StatefulWidget {
   final String receiverUsername;
   final String receiverID;
 
+
   ChatPage({super.key, required this.receiverUsername, required this.receiverID, required String senderID, required List<Map<String, dynamic>> chatHistory});
+
 
   @override
   State<ChatPage> createState() => _ChatPageState();
