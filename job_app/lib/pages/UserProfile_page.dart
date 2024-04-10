@@ -1,15 +1,16 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:job_app/components/text_box_ui.dart';
-import 'package:job_app/components/text_box_ui2.dart';
+import 'package:jobee/components/text_box_ui.dart';
+import 'package:jobee/components/text_box_ui2.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:jobee/services/auth/auth_service.dart';
+
 
 
 class UserProfile extends StatefulWidget {

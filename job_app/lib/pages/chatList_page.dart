@@ -83,7 +83,7 @@ class ChatListPage extends StatelessWidget {
 
                 receiverID: userData["uid"], senderID: "email", chatHistory: [],
 
-                receiverID: userData["uid"],
+                
 
               ),
             ),
