@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:jobee/components/my_drawer.dart';
+
 
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart'; // Import carousel_slider package
 import 'package:jobee/pages/Setting_page.dart';
 import 'package:jobee/pages/UserProfile_page.dart';
+
 import 'package:jobee/pages/job_page.dart';
+
 import '../services/auth/auth_service.dart';
 import 'colors.dart' as color;
 
