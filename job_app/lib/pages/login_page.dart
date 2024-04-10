@@ -1,3 +1,4 @@
+import 'package:job_app/pages/job_page.dart';
 import 'package:job_app/services/auth/auth_service.dart';
 import 'package:job_app/components/my_button.dart';
 import 'package:job_app/components/my_textfield.dart';
@@ -26,6 +27,8 @@ class LoginPage extends StatelessWidget {
       await authService.signInWithEmailPassword(
         _emailController.text,
         _pwController.text,
+        
+       
       );
     }
     //catch any errors
@@ -37,6 +40,8 @@ class LoginPage extends StatelessWidget {
         ),
       );
     }
+
+    
   }
 
   @override

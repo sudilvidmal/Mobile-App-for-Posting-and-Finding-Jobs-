@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -57,8 +60,7 @@ class AuthService {
       _cachedUsername = username;
 
       // Store a demo picture URL for each user
-      final demoPictureUrl =
-          'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg';
+      final demoPictureUrl = 'assets/profile.jpg';
 
       await _firestore.collection("users").doc(userCredential.user!.uid).set(
         {
@@ -67,7 +69,6 @@ class AuthService {
           'username': username,
           'nic': nic,
           'profileImageUrl': demoPictureUrl,
-          'bio': 'Please update your bio!'
         },
       );
 
