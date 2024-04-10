@@ -4,9 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late String _cachedUsername; // Username cache
 
   User? getCurrentUser() {
     return _auth.currentUser;
+  }
+
+  String getCachedUsername() {
+    return _cachedUsername;
   }
 
   // Validate NIC format
@@ -48,8 +53,12 @@ class AuthService {
         password: password,
       );
 
+      // Store the username in the cache
+      _cachedUsername = username;
+
       // Store a demo picture URL for each user
-      final demoPictureUrl = 'assets/profile.jpg';
+      final demoPictureUrl =
+          'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg';
 
       await _firestore.collection("users").doc(userCredential.user!.uid).set(
         {
@@ -58,6 +67,7 @@ class AuthService {
           'username': username,
           'nic': nic,
           'profileImageUrl': demoPictureUrl,
+          'bio': 'Please update your bio!'
         },
       );
 
