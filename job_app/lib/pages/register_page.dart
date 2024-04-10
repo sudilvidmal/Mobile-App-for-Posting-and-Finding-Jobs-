@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_app/services/auth/auth_service.dart';
+import 'package:jobee/services/auth/auth_service.dart';
 
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';

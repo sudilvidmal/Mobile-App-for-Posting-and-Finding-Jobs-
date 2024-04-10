@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:job_app/pages/chatList_page.dart';
+
+import 'package:jobee/pages/chatList_page.dart';
 import '../services/auth/auth_service.dart';
+import '../pages/job_page.dart';
+
 import '../pages/Setting_page.dart';
 import '../pages/UserProfile_page.dart';
 
@@ -80,6 +83,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   Navigator.pop(context);
                 },
               ),
+
+
               ListTile(
                 title: const Text("P R O F I L E"),
                 leading: const Icon(Icons.account_circle),
@@ -105,6 +110,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   );
                 },
+
               ),
               ListTile(
                 title: const Text("S E T T I N G S"),

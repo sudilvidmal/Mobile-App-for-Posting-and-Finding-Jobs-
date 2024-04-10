@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:job_app/themes/dark_mode.dart';
-import 'package:job_app/themes/light_mode.dart';
+import 'package:jobee/themes/dark_mode.dart';
+import 'package:jobee/themes/light_mode.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeData _themeData = lightMode;

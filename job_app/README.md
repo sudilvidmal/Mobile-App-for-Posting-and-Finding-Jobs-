@@ -1,4 +1,4 @@
-# job_app
+# jobee
 
 A new Flutter project.
 

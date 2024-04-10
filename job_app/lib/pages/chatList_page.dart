@@ -1,8 +1,8 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:job_app/pages/Chat_page.dart';
-import 'package:job_app/services/auth/auth_service.dart';
-import 'package:job_app/services/chat/chat_service.dart';
+import 'package:jobee/pages/Chat_page.dart';
+import 'package:jobee/services/auth/auth_service.dart';
+import 'package:jobee/services/chat/chat_service.dart';
 
 // import '../components/my_drawer.dart';
 import '../components/user_tile.dart';
@@ -70,6 +70,7 @@ class ChatListPage extends StatelessWidget {
       Map<String, dynamic> userData, BuildContext context) {
     // display all user exept current user
     if (userData["email"] != _authService.getCurrentUser()!.email) {
+      
       return UserTile(
         text: userData["username"],
         onTap: () {
@@ -79,7 +80,11 @@ class ChatListPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ChatPage(
                 receiverUsername: userData["username"],
+
+                receiverID: userData["uid"], senderID: "email", chatHistory: [],
+
                 receiverID: userData["uid"],
+
               ),
             ),
           );

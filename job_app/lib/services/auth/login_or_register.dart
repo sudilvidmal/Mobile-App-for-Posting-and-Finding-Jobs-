@@ -1,5 +1,5 @@
-import 'package:job_app/pages/login_page.dart';
-import 'package:job_app/pages/register_page.dart';
+import 'package:jobee/pages/login_page.dart';
+import 'package:jobee/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRegister extends StatefulWidget {

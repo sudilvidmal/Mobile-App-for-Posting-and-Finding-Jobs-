@@ -14,6 +14,23 @@ class AuthService {
     return _cachedUsername;
   }
 
+  Future<Map<String, dynamic>?> getUserByEmail(String email) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.data();
+      }
+      return null;
+    } catch (e) {
+      print('Error getting user by email: $e');
+      return null;
+    }
+  }
+
   // Validate NIC format
   bool validateNIC(String nic) {
     // NIC should contain either 12 numbers or 9 numbers ending with X or V
