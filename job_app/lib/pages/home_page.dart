@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_app/components/my_drawer.dart';
+import 'package:jobee/components/my_drawer.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});

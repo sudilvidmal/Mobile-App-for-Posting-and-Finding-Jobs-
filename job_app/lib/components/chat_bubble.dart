@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_app/themes/theme_provider.dart';
+import 'package:jobee/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ChatBubble extends StatelessWidget {

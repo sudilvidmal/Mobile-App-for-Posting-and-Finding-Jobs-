@@ -1,6 +1,6 @@
-import 'package:job_app/services/auth/auth_service.dart';
-import 'package:job_app/components/my_button.dart';
-import 'package:job_app/components/my_textfield.dart';
+import 'package:jobee/services/auth/auth_service.dart';
+import 'package:jobee/components/my_button.dart';
+import 'package:jobee/components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {

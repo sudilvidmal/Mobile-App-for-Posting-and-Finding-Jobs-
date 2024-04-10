@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:job_app/services/auth/auth_gate.dart';
-import 'package:job_app/firebase_options.dart';
+import 'package:jobee/services/auth/auth_gate.dart';
+import 'package:jobee/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:job_app/themes/theme_provider.dart';
+import 'package:jobee/themes/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

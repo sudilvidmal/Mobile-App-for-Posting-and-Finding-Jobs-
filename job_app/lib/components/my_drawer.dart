@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:job_app/pages/chatList_page.dart';
+import 'package:jobee/pages/chatList_page.dart';
+
 
 import '../services/auth/auth_service.dart';
-// import '../pages/Chat_page.dart';
+import '../pages/job_page.dart';
 import '../pages/Setting_page.dart';
 import '../pages/UserProfile_page.dart';
 
@@ -88,12 +89,16 @@ class MyDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: ListTile(
-                  title: const Text("C H A T"),
-                  leading: const Icon(Icons.message),
+                  title: const Text("J O B S"),
+                  leading: const Icon(Icons.list),
                   onTap: () {
                     //pop the drawer
                     Navigator.pop(context);
-                    //navigate to the chat page
+                    //navigate to the job page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const JobPage()),
+                    );
                   },
                 ),
               ),
@@ -103,8 +108,8 @@ class MyDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: ListTile(
-                  title: const Text("C H A T  L I S T"),
-                  leading: const Icon(Icons.list),
+                  title: const Text("C H A T"),
+                  leading: const Icon(Icons.message),
                   onTap: () {
                     //pop the drawer
                     Navigator.pop(context);

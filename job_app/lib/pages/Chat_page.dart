@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:job_app/components/chat_bubble.dart';
-import 'package:job_app/components/my_textfield.dart';
-import 'package:job_app/services/auth/auth_service.dart';
-import 'package:job_app/services/chat/chat_service.dart';
+import 'package:jobee/components/chat_bubble.dart';
+import 'package:jobee/components/my_textfield.dart';
+import 'package:jobee/services/auth/auth_service.dart';
+import 'package:jobee/services/chat/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
-  final String receiverEmail;
+  final String receiverUsername;
   final String receiverID;
 
-  ChatPage({super.key, required this.receiverEmail, required this.receiverID});
+  ChatPage({super.key, required this.receiverUsername, required this.receiverID, required String senderID, required List<Map<String, dynamic>> chatHistory});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -87,7 +87,7 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
-          widget.receiverEmail,
+          widget.receiverUsername,
           style: const TextStyle(
             fontSize: 16, // Adjust the font size as needed
           ),
