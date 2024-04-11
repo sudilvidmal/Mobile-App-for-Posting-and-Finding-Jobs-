@@ -2,6 +2,7 @@ import 'package:jobee/services/auth/auth_service.dart';
 import 'package:jobee/components/my_button.dart';
 import 'package:jobee/components/my_textfield.dart';
 import 'package:flutter/material.dart';
+import '../pages/colors.dart' as color;
 
 class LoginPage extends StatelessWidget {
   //email and password text contollers
@@ -48,11 +49,10 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //logo
-
-            Icon(
-              Icons.message,
-              size: 60,
-              color: Theme.of(context).colorScheme.primary,
+            Image.asset(
+              'assets/JOBEELOGO.png', // Path to your image asset
+              width: 100, // Adjust the width as needed
+              height: 100, // Adjust the height as needed
             ),
 
             const SizedBox(height: 50),
@@ -62,9 +62,9 @@ class LoginPage extends StatelessWidget {
             Text(
               "Welcome Back",
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: 16,
-              ),
+                  color: color.AppColor.gradientFirst,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
             ),
 
             const SizedBox(height: 25),
@@ -111,7 +111,7 @@ class LoginPage extends StatelessWidget {
                     "Register now",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary),
+                        color: color.AppColor.gradientSecond),
                   ),
                 ),
               ],

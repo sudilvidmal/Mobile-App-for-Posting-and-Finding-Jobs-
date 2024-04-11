@@ -119,4 +119,27 @@ class AuthService {
       return null;
     }
   }
+
+  Future<List<Map<String, dynamic>>> getUsersIMessaged() async {
+    try {
+      final currentUser = getCurrentUser();
+      if (currentUser != null) {
+        // Retrieve the list of messaged users
+        final querySnapshot = await _firestore
+            .collection('message_recipients')
+            .where('senderID', isEqualTo: currentUser.uid)
+            .get();
+
+        // Convert the query snapshot to a list of maps
+        return querySnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      } else {
+        throw Exception('User not logged in.');
+      }
+    } catch (e) {
+      print('Error getting messaged users: $e');
+      return [];
+    }
+  }
 }

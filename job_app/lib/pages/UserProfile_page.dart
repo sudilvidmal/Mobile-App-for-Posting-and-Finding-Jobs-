@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import '../pages/colors.dart' as color;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,6 @@ import 'package:flutter/widgets.dart';
 import 'package:jobee/components/text_box_ui.dart';
 import 'package:jobee/components/text_box_ui2.dart';
 import 'package:image_picker/image_picker.dart';
-
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -31,14 +30,17 @@ class _UserProfileState extends State<UserProfile> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: color.AppColor.homePageBackground,
         title: Text(
           "Edit your $field",
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: color.AppColor.gradientSecond,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         ),
         content: TextField(
           autofocus: true,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.grey[700]),
           decoration: InputDecoration(
             hintText: "Enter your new $field here!",
             hintStyle: TextStyle(color: Colors.grey),
@@ -51,14 +53,14 @@ class _UserProfileState extends State<UserProfile> {
           TextButton(
             child: Text(
               'Cancel',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.grey[700]),
             ),
             onPressed: () => Navigator.pop(context),
           ),
           TextButton(
             child: Text(
               'Save',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: color.AppColor.gradientSecond),
             ),
             onPressed: () => Navigator.of(context).pop(newValue),
           )
@@ -130,14 +132,30 @@ class _UserProfileState extends State<UserProfile> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Save Image?'),
-          content: Text('Do you want to save this image?'),
+          backgroundColor: color.AppColor.homePageBackground,
+          title: Text(
+            'Save Image?',
+            style: TextStyle(
+                color: color.AppColor.gradientSecond,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            'Do you want to save this image?',
+            style: TextStyle(
+                color: Colors.grey[700],
+                fontSize: 15,
+                fontWeight: FontWeight.w500),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.grey[700]),
+              ),
             ),
             TextButton(
               onPressed: () async {
@@ -157,7 +175,8 @@ class _UserProfileState extends State<UserProfile> {
                   print('Error uploading image to Firebase Storage: $e');
                 }
               },
-              child: Text('Save'),
+              child: Text('Save',
+                  style: TextStyle(color: color.AppColor.gradientSecond)),
             ),
           ],
         ),
@@ -242,16 +261,16 @@ class _UserProfileState extends State<UserProfile> {
                             : Container(),
                         Positioned(
                           bottom: 0,
-                          right: 135,
+                          right: 145,
                           child: Container(
                               width: 35,
                               height: 35,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
-                                  color: Colors.white),
+                                  color: color.AppColor.gradientSecond),
                               child: IconButton(
-                                icon: const Icon(Icons.camera_alt_rounded),
-                                color: Colors.grey[700],
+                                icon: const Icon(Icons.edit),
+                                color: color.AppColor.homePageBackground,
                                 iconSize: 20,
                                 onPressed: _selectAndUploadImage,
                               )),
@@ -264,13 +283,15 @@ class _UserProfileState extends State<UserProfile> {
                     'Hello, ' + (userData['username'] ?? ''),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 18, // Adjust the font size as needed
-                    ),
+                        color: Colors.grey[700],
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500
+                        // Adjust the font size as needed
+                        ),
                   ),
                   SizedBox(height: 50),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Text(
                       "View & Edit Details",
                       style: TextStyle(

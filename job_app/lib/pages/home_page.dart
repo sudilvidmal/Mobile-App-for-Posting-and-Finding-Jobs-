@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart'; // Import carousel_slider package
-import 'package:jobee/pages/Setting_page.dart';
+
 import 'package:jobee/pages/UserProfile_page.dart';
+import 'package:jobee/pages/chatList_page.dart';
 
 import 'package:jobee/pages/job_page.dart';
+import 'package:jobee/pages/job_publish.dart';
 
 import '../services/auth/auth_service.dart';
 import 'colors.dart' as color;
@@ -72,19 +71,19 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Welcome",
+                        'Hi ' + username + ',',
                         style: TextStyle(
-                          fontSize: 30,
-                          color: color.AppColor.homePageTitle,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: color.AppColor.homePageSubtitle,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        username,
+                        "Welcome back",
                         style: TextStyle(
                           fontSize: 20,
-                          color: color.AppColor.homePageSubtitle,
-                          fontWeight: FontWeight.w500,
+                          color: color.AppColor.homePageTitle,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -100,7 +99,8 @@ class _HomePageState extends State<HomePage> {
                         radius: 30,
                         backgroundImage: profileImageUrl.isNotEmpty
                             ? NetworkImage(profileImageUrl)
-                            : AssetImage('assets/imagejob2.png')
+                            : NetworkImage(
+                                    'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg')
                                 as ImageProvider,
                       ),
                     ],
@@ -125,9 +125,9 @@ class _HomePageState extends State<HomePage> {
                         topRight: Radius.circular(80)),
                     boxShadow: [
                       BoxShadow(
-                          offset: Offset(5, 10),
+                          offset: Offset(0, 0),
                           blurRadius: 10,
-                          color: color.AppColor.gradientSecond.withOpacity(0.3))
+                          color: color.AppColor.gradientSecond.withOpacity(0.5))
                     ]),
                 child: Container(
                   padding: const EdgeInsets.only(
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "some thing add",
+                        "Be Succeed!",
                         style: TextStyle(
                             fontSize: 16,
                             color: color.AppColor.homePageContainerTextSmall),
@@ -199,7 +199,11 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => JobPage()),
                                 );
                               },
-                              child: Text('Lets Go'),
+                              child: Text(
+                                'Lets Go',
+                                style: TextStyle(
+                                    color: color.AppColor.gradientFirst),
+                              ),
                             ),
                           ),
                         ],
@@ -224,9 +228,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(5, 10),
+                      offset: Offset(0, 0),
                       blurRadius: 10,
-                      color: color.AppColor.homePageTitle.withOpacity(0.1),
+                      color: color.AppColor.homePageTitle.withOpacity(0.15),
                     ),
                   ],
                 ),
@@ -245,9 +249,9 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             "Looking for skilled workers?",
                             style: TextStyle(
-                              fontSize: 15,
-                              color: color.AppColor.homePageTitle,
-                            ),
+                                fontSize: 15,
+                                color: color.AppColor.homePageTitle,
+                                fontWeight: FontWeight.w500),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 3.0),
@@ -273,6 +277,10 @@ class _HomePageState extends State<HomePage> {
                         color: color.AppColor
                             .gradientFirst, // Replace with your desired icon
                         onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Job_Page()),
+                          );
                           // Add your onPressed functionality here
                         },
                       ),
@@ -317,11 +325,19 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              color.AppColor.gradientFirst.withOpacity(0.7),
-                              color.AppColor.gradientSecond.withOpacity(0.7),
+                              color.AppColor.gradientFirst.withOpacity(0.9),
+                              color.AppColor.gradientSecond.withOpacity(0.9),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0, 0),
+                              blurRadius: 10,
+                              color: color.AppColor.homePageTitle
+                                  .withOpacity(0.15),
+                            ),
+                          ],
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -357,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SettingPage()),
+                              builder: (context) => ChatListPage()),
                         );
                       },
                       child: Container(
@@ -368,25 +384,25 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                offset: Offset(5, 10),
+                                offset: Offset(0, 0),
                                 blurRadius: 10,
                                 color: color.AppColor.homePageTitle
-                                    .withOpacity(0.2),
+                                    .withOpacity(0.15),
                               ),
                             ]),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.settings,
-                              color: Colors.green,
+                              Icons.chat,
+                              color: color.AppColor.gradientSecond,
                               size: 40,
                             ),
                             SizedBox(height: 5),
                             Text(
-                              'Settings',
+                              'Inbox',
                               style: TextStyle(
-                                color: Colors.green,
+                                color: color.AppColor.gradientSecond,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),

@@ -9,9 +9,12 @@ class ChatPage extends StatefulWidget {
   final String receiverUsername;
   final String receiverID;
 
-
-  ChatPage({super.key, required this.receiverUsername, required this.receiverID, required String senderID, required List<Map<String, dynamic>> chatHistory});
-
+  ChatPage(
+      {super.key,
+      required this.receiverUsername,
+      required this.receiverID,
+      required String senderID,
+      required List<Map<String, dynamic>> chatHistory});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -183,8 +186,8 @@ class _ChatPageState extends State<ChatPage> {
           //send button
           Container(
             decoration: const BoxDecoration(
-              color: Colors.green,
               shape: BoxShape.circle,
+              color: Color(0xFF2BA84A),
             ),
             margin: const EdgeInsets.only(right: 25),
             child: IconButton(
