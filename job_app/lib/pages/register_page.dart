@@ -3,6 +3,7 @@ import 'package:jobee/services/auth/auth_service.dart';
 
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
+import '../pages/colors.dart' as color;
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -66,16 +67,17 @@ class RegisterPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.message,
-                size: 60,
-                color: Theme.of(context).colorScheme.primary,
+              Image.asset(
+                'assets/JOBEELOGO.png', // Path to your image asset
+                width: 100, // Adjust the width as needed
+                height: 100, // Adjust the height as needed
               ),
               const SizedBox(height: 50),
               Text(
                 "Let's create an account for you",
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: color.AppColor.gradientFirst,
+                  fontWeight: FontWeight.w500,
                   fontSize: 16,
                 ),
               ),
@@ -130,7 +132,7 @@ class RegisterPage extends StatelessWidget {
                       "Login now",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: color.AppColor.gradientSecond,
                       ),
                     ),
                   ),

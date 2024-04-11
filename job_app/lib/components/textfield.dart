@@ -1,47 +1,45 @@
 import 'package:flutter/material.dart';
-import '../themes/light_mode.dart';
 
+class FormTextField extends StatelessWidget {
+  final String hintText;
+  final bool obscureText;
+  final int? maxLines;
+  final TextEditingController controller;
+  final FocusNode? focusNode;
 
+  const FormTextField({
+    Key? key,
+    required this.hintText,
+    required this.obscureText,
+    this.maxLines, // Updated to accept nullable int
+    required this.controller,
+    this.focusNode,
+  }) : super(key: key);
 
-
-
-class MyTextField extends StatelessWidget {
-  final String hinttext;
-  final bool obsectext;
-  final TextEditingController txtcontroller;
-  final maxline;
-  const MyTextField({super.key,
-  required this.hinttext,required this.obsectext,
-  required this.txtcontroller,required this.maxline,
-  });
-
-   @override
+  @override
   Widget build(BuildContext context) {
-    return Padding(padding: const EdgeInsets.symmetric(horizontal: 25.0),
-    child: TextField(
-      maxLines: maxline,
-      obscureText: obsectext,
-      controller: txtcontroller ,
-decoration: InputDecoration(
-  enabledBorder: OutlineInputBorder(
-   
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-  ),
-  //fillColor: Theme.of(context).colorScheme.primary,
-  filled: true,
-  hintText: hinttext,
-  
-  
-)
-    )
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
+      child: TextField(
+        obscureText: obscureText,
+        controller: controller,
+        focusNode: focusNode,
+        maxLines: maxLines, // Set the maxLines property here
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.tertiary),
+              borderRadius: BorderRadius.circular(10)),
+          focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.tertiary),
+          ),
+          fillColor: Theme.of(context).colorScheme.secondary,
+          filled: true,
+          hintText: hintText,
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
+      ),
     );
-    
-    
-    
   }
-
-  
 }
-

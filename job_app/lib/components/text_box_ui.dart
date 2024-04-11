@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/colors.dart' as color;
 
 class Uptextbox extends StatelessWidget {
   final String text;
@@ -14,9 +15,18 @@ class Uptextbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 0),
+            blurRadius: 10,
+            color: color.AppColor.homePageTitle.withOpacity(0.15),
+          ),
+        ],
+      ),
       padding: const EdgeInsets.only(left: 15, bottom: 15),
-      margin: const EdgeInsets.only(left: 20, right: 29, top: 20),
+      margin: const EdgeInsets.only(left: 30, right: 30, top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -26,7 +36,9 @@ class Uptextbox extends StatelessWidget {
             children: [
               Text(
                 sectionName,
-                style: TextStyle(color: Colors.grey[500]),
+                style: TextStyle(
+                    color: color.AppColor.gradientFirst,
+                    fontWeight: FontWeight.w500),
               ),
 
               //edit button
@@ -34,7 +46,7 @@ class Uptextbox extends StatelessWidget {
                   onPressed: onPressed,
                   icon: Icon(
                     Icons.settings,
-                    color: Colors.grey[400],
+                    color: color.AppColor.gradientSecond,
                   ))
             ],
           ),

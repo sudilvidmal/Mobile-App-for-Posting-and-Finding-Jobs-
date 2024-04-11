@@ -1,38 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jobee/components/textfield.dart';
+import '../pages/colors.dart' as color;
 import 'package:jobee/pages/database_conn.dart';
 
-
 class UpdateJobForm extends StatefulWidget {
-  const UpdateJobForm ({super.key, required this.docid});
+  const UpdateJobForm({Key? key, required this.docid}) : super(key: key);
 
- final docid;
+  final docid;
 
   @override
-  State<UpdateJobForm > createState() => _UpdateJobFormState();
-
-
+  State<UpdateJobForm> createState() => _UpdateJobFormState();
 }
 
-class _UpdateJobFormState extends State<UpdateJobForm > {
-
+class _UpdateJobFormState extends State<UpdateJobForm> {
   late TextEditingController txtupdatenamecontroller;
   late TextEditingController txtupdatetitlecontroller;
-   late TextEditingController txtdesccontroller ;
+  late TextEditingController txtdesccontroller;
 
-    List<String> fieldList = ['IT','Graphic Design','Health'];
- String ? SelectedItem = 'IT';
-
+  List<String> fieldList = ['IT', 'Graphic Design', 'Health'];
+  String? SelectedItem = 'IT';
 
   @override
   void initState() {
     super.initState();
-    txtupdatenamecontroller= TextEditingController();
+    txtupdatenamecontroller = TextEditingController();
     txtupdatetitlecontroller = TextEditingController();
     txtdesccontroller = TextEditingController();
 
-     fetchExistingData();
+    fetchExistingData();
   }
 
   @override
@@ -43,9 +39,8 @@ class _UpdateJobFormState extends State<UpdateJobForm > {
     super.dispose();
   }
 
-
-   Future<void> fetchExistingData() async {
-    try {     
+  Future<void> fetchExistingData() async {
+    try {
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
           .collection('job_list')
           .doc(widget.docid)
@@ -58,7 +53,7 @@ class _UpdateJobFormState extends State<UpdateJobForm > {
           txtupdatenamecontroller.text = jobSnapshot['name'];
           txtupdatetitlecontroller.text = jobSnapshot['title'];
           txtdesccontroller.text = jobSnapshot['description'];
-          SelectedItem = jobSnapshot['Category']; 
+          SelectedItem = jobSnapshot['Category'];
         });
       }
     } catch (e) {
@@ -66,57 +61,169 @@ class _UpdateJobFormState extends State<UpdateJobForm > {
     }
   }
 
-
-  updateValues(){
-    DatabaseConn dbc = new DatabaseConn();
-   setState(() { // Update SelectedItem within setState
-    dbc.updateJobList(
-      txtupdatenamecontroller.text,
-      txtdesccontroller.text,
-      txtupdatetitlecontroller.text,
-      widget.docid,
-      SelectedItem,
-    );
-  });
-  Navigator.pop(context);
+  void updateValues() {
+    if (txtupdatenamecontroller.text.isEmpty ||
+        txtupdatetitlecontroller.text.isEmpty ||
+        txtdesccontroller.text.isEmpty) {
+      // Show a dialog if any of the fields are empty
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("Please fill in all the fields."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      DatabaseConn dbc = DatabaseConn();
+      setState(() {
+        // Update SelectedItem within setState
+        dbc.updateJobList(
+          txtupdatenamecontroller.text,
+          txtdesccontroller.text,
+          txtupdatetitlecontroller.text,
+          widget.docid,
+          SelectedItem,
+        );
+      });
+      Navigator.pop(context);
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Update Job"),),
-      body: Column(
-        children: [
-           SizedBox(height: 20),
-          DropdownButton<String>( value: SelectedItem,items: fieldList.map((item) => DropdownMenuItem(value: item,child: Text(item,style: TextStyle(fontSize: 24)))).toList(), 
-          onChanged: (item) => setState(() => SelectedItem = item
-          
-          )
+      appBar: AppBar(
+        title: const Text(
+          "Update Job",
+          style: TextStyle(
+            fontSize: 20, // Adjust the font size as needed
           ),
-          
-          MyTextField(
-            hinttext: 'Name',
-            maxline: null,
-            obsectext: false,
-            txtcontroller: txtupdatenamecontroller,
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+              left: 30.0, right: 30.0, top: 0, bottom: 20),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Selected Category: $SelectedItem',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: color.AppColor.homePageTitle,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 0),
+                          blurRadius: 10,
+                          color: color.AppColor.homePageTitle.withOpacity(0.2),
+                        ),
+                      ],
+                    ),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.category,
+                        color: color.AppColor.gradientSecond,
+                      ),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 200,
+                              child: Column(
+                                children: fieldList.map((item) {
+                                  return ListTile(
+                                    leading: Icon(
+                                      Icons.category,
+                                      color: color.AppColor.gradientSecond,
+                                    ),
+                                    title: Text(item),
+                                    onTap: () {
+                                      setState(() {
+                                        SelectedItem = item;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              FormTextField(
+                hintText: 'Job Title',
+                obscureText: false,
+                maxLines: 1,
+                controller: txtupdatetitlecontroller,
+              ),
+              SizedBox(height: 20),
+              FormTextField(
+                hintText: 'Company/Your name',
+                obscureText: false,
+                maxLines: 1,
+                controller: txtupdatenamecontroller,
+              ),
+              SizedBox(height: 20),
+              FormTextField(
+                hintText: 'Description',
+                obscureText: false,
+                maxLines: 7,
+                controller: txtdesccontroller,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: updateValues,
+                child: Text("Update",
+                    style: TextStyle(color: color.AppColor.homePageBackground)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color.AppColor
+                      .gradientSecond, // Change the button color to blue
+                  padding: EdgeInsets.symmetric(
+                      vertical: 16, horizontal: 24), // Increase padding
+                  shape: RoundedRectangleBorder(
+                    // Reduce the border radius
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          MyTextField(
-            hinttext: 'Title',
-            maxline: null,
-            obsectext: false,
-            txtcontroller: txtupdatetitlecontroller,
-          ),
-          MyTextField(
-            hinttext: 'Description',
-            maxline: 8,
-            obsectext: false,
-            txtcontroller: txtdesccontroller,
-          ),
-          ElevatedButton(
-            onPressed: updateValues,
-            child: Text("Submit"),
-          )
-        ],
+        ),
       ),
     );
   }

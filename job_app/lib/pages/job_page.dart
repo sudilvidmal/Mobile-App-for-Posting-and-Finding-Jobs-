@@ -1,9 +1,8 @@
-//import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jobee/pages/home_page.dart';
 import 'package:jobee/pages/job_detail.dart';
+import '../pages/colors.dart' as color;
 
 class JobPage extends StatefulWidget {
   const JobPage({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
   late Animation<Color?> _colorAnimation;
 
   Color _containerColor =
-      Color.fromARGB(255, 33, 243, 33); // Default color for the container
+      color.AppColor.gradientSecond; // Default color for the container
 
   late TextEditingController _searchController = TextEditingController();
   late Stream<QuerySnapshot> _jobsStream;
@@ -47,8 +46,8 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
   void _updateSearch(String searchTerm) {
     setState(() {
       if (searchTerm.isEmpty) {
-        _jobsStream =
-            FirebaseFirestore.instance.collection('job_list').snapshots();
+        _filterByCategory(
+            _selectedCategory); // Keep the current category filter while searching
       } else {
         _jobsStream = FirebaseFirestore.instance
             .collection('job_list')
@@ -63,7 +62,7 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
   void _filterByCategory(String category) {
     setState(() {
       _selectedCategory = category;
-      if (category.isEmpty) {
+      if (category == 'all') {
         _jobsStream =
             FirebaseFirestore.instance.collection('job_list').snapshots();
       } else {
@@ -110,7 +109,8 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
           actions: [],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(
+              top: 16.0, bottom: 16.0, left: 30, right: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -119,8 +119,8 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
-                  border:
-                      Border.all(color: const Color.fromARGB(255, 10, 10, 10)),
+                  border: Border.all(
+                      color: Color.fromARGB(255, 212, 212, 212), width: 2.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -135,7 +135,10 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                             prefixIcon: Icon(Icons.search),
                             suffixIcon: IconButton(
                               // Add a suffix icon button
-                              icon: Icon(Icons.category), // Icon for category
+                              icon: Icon(
+                                Icons.category,
+                                color: color.AppColor.gradientSecond,
+                              ), // Icon for category
                               onPressed: () {
                                 showModalBottomSheet(
                                   context: context,
@@ -144,6 +147,19 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.category,
+                                              color:
+                                                  color.AppColor.gradientSecond,
+                                            ),
+                                            title: Text('All'),
+                                            onTap: () {
+                                              // Handle category selection
+                                              _filterByCategory('all');
+                                              Navigator.pop(context);
+                                            },
+                                          ),
                                           StreamBuilder<QuerySnapshot>(
                                             stream: FirebaseFirestore.instance
                                                 .collection('job_list')
@@ -155,16 +171,12 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                                               }
                                               if (snapshot.hasData) {
                                                 final List<String> categories =
-                                                    []; // To store unique categories
-                                                snapshot.data!.docs
-                                                    .forEach((doc) {
-                                                  final category =
-                                                      doc['Category'] as String;
-                                                  if (!categories
-                                                      .contains(category)) {
-                                                    categories.add(category);
-                                                  }
-                                                });
+                                                    snapshot.data!.docs
+                                                        .map((doc) =>
+                                                            doc['Category']
+                                                                as String)
+                                                        .toList()
+                                                      ..sort(); // Get all categories
                                                 return ListView.builder(
                                                   shrinkWrap: true,
                                                   itemCount: categories.length,
@@ -172,17 +184,28 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                                                       (context, index) {
                                                     final category =
                                                         categories[index];
-                                                    return ListTile(
-                                                      leading:
-                                                          Icon(Icons.category),
-                                                      title: Text(category),
-                                                      onTap: () {
-                                                        // Handle category selection
-                                                        _filterByCategory(
-                                                            category);
-                                                        Navigator.pop(context);
-                                                      },
-                                                    );
+                                                    // Show category only once or if it's the only one available
+                                                    if (index == 0 ||
+                                                        category !=
+                                                            categories[
+                                                                index - 1]) {
+                                                      return ListTile(
+                                                        leading: Icon(
+                                                          Icons.category,
+                                                          color: color.AppColor
+                                                              .gradientSecond,
+                                                        ),
+                                                        title: Text(category),
+                                                        onTap: () {
+                                                          // Handle category selection
+                                                          _filterByCategory(
+                                                              category);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      );
+                                                    }
+                                                    return SizedBox.shrink();
                                                   },
                                                 );
                                               }
@@ -206,11 +229,14 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(height: 18),
-              Text(
-                "All Available Jobs", // Add the text "Job" here
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "All Available Jobs", // Add the text "Job" here
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               SizedBox(
@@ -221,12 +247,13 @@ class _JobPageState extends State<JobPage> with SingleTickerProviderStateMixin {
                 height: 7,
                 width: double.infinity,
                 foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
                   gradient: LinearGradient(
                     begin: Alignment.centerRight,
                     end: Alignment.centerLeft,
                     colors: [
                       _containerColor,
-                      Color.fromARGB(126, 0, 0, 0),
+                      color.AppColor.gradientFirst,
                     ],
                     stops: [0.3, 1],
                   ),
@@ -266,7 +293,7 @@ class _JobListScreenState extends State<JobListScreen> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
         ),
         Expanded(
           child: StreamBuilder(
@@ -290,27 +317,47 @@ class _JobListScreenState extends State<JobListScreen> {
                   String jobName = data['name'];
                   String jobDescription = data['description'];
                   String jobPosterEmail = data['user_email'];
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 4.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: ListTile(
-                      title: Text(jobTitle),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => JobDetailsScreen(
-                              jobTitle: jobTitle,
-                              jobName: jobName,
-                              jobDescription: jobDescription,
-                              jobPosterEmail: jobPosterEmail,
-                            ),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 0),
+                            blurRadius: 10,
+                            color:
+                                color.AppColor.homePageTitle.withOpacity(0.15),
                           ),
-                        );
-                      },
+                        ],
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          jobTitle,
+                          style: TextStyle(
+                              color: color.AppColor.gradientFirst,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15),
+                        ),
+                        subtitle: Text(
+                          'Publisher: ' + jobName,
+                          style: TextStyle(color: color.AppColor.homePageTitle),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => JobDetailsScreen(
+                                jobTitle: jobTitle,
+                                jobName: jobName,
+                                jobDescription: jobDescription,
+                                jobPosterEmail: jobPosterEmail,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   );
                 },
